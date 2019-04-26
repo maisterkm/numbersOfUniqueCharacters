@@ -12,10 +12,7 @@ public class App
     {
         String str = "";
         Counter counter = new Counter();
-        counter.print("Hello world!");
-        
         Scanner in = new Scanner(System.in);
-        
         do {
             System.out.print("Input a string: ");
             str = in.nextLine();
