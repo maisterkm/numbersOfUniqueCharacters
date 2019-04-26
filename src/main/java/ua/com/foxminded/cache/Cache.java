@@ -35,7 +35,6 @@ public class Cache {
     }
     
     public HashMap<Character, Integer> getCache(String str) {
-        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
         for (Item item : cacheArray) {
             if (str.equals(item.getStr())) {
                 return item.getMap();
