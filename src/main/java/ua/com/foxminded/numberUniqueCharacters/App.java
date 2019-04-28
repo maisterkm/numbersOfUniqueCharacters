@@ -2,10 +2,6 @@ package ua.com.foxminded.numberUniqueCharacters;
 
 import java.util.Scanner;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
     public static void main( String[] args )
@@ -17,7 +13,7 @@ public class App
             System.out.print("Input a string: ");
             str = in.nextLine();
             if (str.equals("q")) {
-                System.out.println("Quit program");
+                System.out.println("Program was terminated");
             } else {
                   counter.print(str);
             }
