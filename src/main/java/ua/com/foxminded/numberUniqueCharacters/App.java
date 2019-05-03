@@ -16,11 +16,10 @@ public class App
                 System.out.println("Program was terminated");
             } else {
                 counter.addStringToGlobalMap(str);
-                counter.print(str);
-                counter.countCharacterType(str);
-                counter.printFrequencyFromGlobalMap();
-                System.out.println("Number continuous consonant sequences in the line: " + counter.countConsonantSequences(str));
-                counter.printContinuousConsonantSequences();
+                counter.printNumbersUniqueCharachters(str);
+                counter.printNumbersUniqueCharachtersInGlobalText();
+                counter.printNumbersOfCharactersTypes(str);
+                counter.printContinuousConsonantSequences(str);
                 counter.printMinMaxIndexForSymbol(str);
             }
         } while (!str.equals("q"));

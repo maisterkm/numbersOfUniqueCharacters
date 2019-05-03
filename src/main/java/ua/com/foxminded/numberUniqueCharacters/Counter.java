@@ -10,7 +10,7 @@ public class Counter {
     private HashMap<Character, Integer> globalMap = new HashMap<Character, Integer>();
     private ArrayList<String> arrOfSequences = new ArrayList<String>();
     
-//    1) the number of unique characters in the current line
+//    1) The number of unique characters in the current line
     public HashMap<Character, Integer> countUniqueCharachters(String str) {
         HashMap<Character, Integer> map = new HashMap<Character, Integer>();
         if (getCache(str) != null) {
@@ -25,42 +25,86 @@ public class Counter {
         return map;
     }
     
-//    2) how many times the particular character appears in the global text
-    public void printFrequencyFromGlobalMap() {
-        System.out.println("The number of unique characters in the global text");
-        for(Map.Entry<Character,Integer> item : globalMap.entrySet()) {
-            System.out.println("\"" + item.getKey() + "\" - " + item.getValue());
+    public String printNumbersUniqueCharachters(String str) {
+        HashMap<Character, Integer> map = countUniqueCharachters(str);
+        String output = str + "\n" + "The number of unique characters in the current line\n";
+        for(Map.Entry<Character, Integer> item : map.entrySet()) {
+            output += "\"" + item.getKey() + "\" - " + item.getValue() + "\n";
         }
+        System.out.print(output);
+        return output;
     }
     
-    public void addStringToGlobalMap(String str) {
-            if (getCache(str) != null) {
-                globalMap = getCache(str);
-            } else {
-                for (int i = 0; i < str.length(); i++) {
-                    Integer frequency = globalMap.get(str.charAt(i));
-                    globalMap.put(str.charAt(i), frequency == null ? 1 : frequency + 1);
-                }
-                setCache(str, countUniqueCharachters(str));
-            }
+//    2) How many times the particular character appears in the global text
+    public HashMap<Character, Integer> addStringToGlobalMap(String str) {
+        for (int i = 0; i < str.length(); i++) {
+            Integer frequency = globalMap.get(str.charAt(i));
+            globalMap.put(str.charAt(i), frequency == null ? 1 : frequency + 1);
+        }
+        setCache(str, countUniqueCharachters(str));
+    return globalMap;
+}
+    
+    public String printNumbersUniqueCharachtersInGlobalText() {
+        String output = "The number of unique characters in the global text\n";
+        for(Map.Entry<Character,Integer> item : globalMap.entrySet()) {
+            output += "\"" + item.getKey() + "\" - " + item.getValue() + "\n";
+        }
+        System.out.println(output);
+        return output;
     }
     
-//    3) how many vowels and consonants in the current line
-    public void countCharacterType(String str) {
+//    3) How many vowels and consonants in the current line
+    public int countVowels(String str) {
         int vowels = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (isVowel(str.charAt(i))) {
+                vowels++;
+            } 
+        }
+        return vowels;
+    }
+    
+    public int countConsonants(String str) {
         int consonants = 0;
         for (int i = 0; i < str.length(); i++) {
-                if (isConsonant(str.charAt(i))) {
-                    consonants++;
-                } else if(isVowel(str.charAt(i))) {
-                    vowels++;
-                }
+            if (isConsonant(str.charAt(i))) {
+                consonants++;
+            } 
         }
-        System.out.println("Vowels: " + vowels);
-        System.out.println("Consonant: " + consonants);
+        return consonants;
     }
+  
+    private boolean isVowel(Character chr) {
+        if ((chr >= 'a' && chr <= 'z') || (chr >= 'A' && chr <= 'Z')) {
+            chr = Character.toLowerCase(chr);
+            if (chr == 'a' || chr == 'e' || chr == 'i' || chr == 'o' || chr == 'u') {
+                return true;
+            }
+        }
+        return false;
+    }
+      
+    private boolean isConsonant(Character chr) {
+        if ((chr >= 'a' && chr <= 'z') || (chr >= 'A' && chr <= 'Z')) {
+            chr = Character.toLowerCase(chr);
+            if (chr != 'a' && chr != 'e' && chr != 'i' && chr != 'o' && chr != 'u') {
+                return true;
+            }
+        }
+        return false;
+    }
+      
+    public String printNumbersOfCharactersTypes(String str) {
+        String output = "";
+        output += "Number of vowels: " + countVowels(str) + "\n";
+        output += "Number of consonants: " + countConsonants(str) + "\n"; 
+        System.out.println(output);
+        return output;
+    }
+
     
-//    4) how many continuous consonant sequences in the line
+//    4) How many continuous consonant sequences in the line
     public int countConsonantSequences(String str) {
         String consonantSequence = "";
         arrOfSequences.clear();
@@ -81,13 +125,22 @@ public class Counter {
         return arrOfSequences.size();
     }
     
-//    5) for each symbol the minimal and maximal index of it in the line
-    public void printMinMaxIndexForSymbol(String str) {
+    public String printContinuousConsonantSequences(String str) {
+        String output = "There are " + countConsonantSequences(str) + " continuous consonant sequences in the line: ";
+        for (String item : arrOfSequences) {
+            output += item + " ";
+        }
+        System.out.println(output + "\n");
+        return output;
+    }
+    
+//    5) For each symbol the minimal and maximal index of it in the line
+    public String printMinMaxIndexForSymbol(String str) {
         Integer min;
         Integer max;
+        String output = "";
         HashMap<Character, Integer> minMap = new HashMap<Character, Integer>();
         HashMap<Character, Integer> maxMap = new HashMap<Character, Integer>();
-        
         for (int i = 0; i < str.length(); i++) {
             min  = minMap.get(str.charAt(i));
             if (min == null) {
@@ -101,35 +154,11 @@ public class Counter {
         while (itMax.hasNext() && itMin.hasNext()) {
             Map.Entry<Character, Integer> entryMin = (Map.Entry<Character, Integer>)itMin.next();
             Map.Entry<Character, Integer> entryMax = (Map.Entry<Character, Integer>)itMax.next();
-            System.out.println("For symbol '" + entryMin.getKey() + "' minimal index is " + entryMin.getValue() + 
-                                ", maximal index is " + entryMax.getValue());
+            output += "For symbol '" + entryMin.getKey() + "' minimal index is " + entryMin.getValue() + 
+                    ", maximal index is " + entryMax.getValue() + "\n";
         }
-    }
-    
-    public void printContinuousConsonantSequences() {
-        for (String item : arrOfSequences) {
-            System.out.println(item);
-        }
-    }
-    
-    private boolean isVowel(Character chr) {
-        if ((chr >= 'a' && chr <= 'z') || (chr >= 'A' && chr <= 'Z')) {
-            chr = Character.toLowerCase(chr);
-            if (chr == 'a' && chr == 'e' && chr == 'i' && chr == 'o' && chr == 'u') {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    private boolean isConsonant(Character chr) {
-        if ((chr >= 'a' && chr <= 'z') || (chr >= 'A' && chr <= 'Z')) {
-            chr = Character.toLowerCase(chr);
-            if (chr != 'a' && chr != 'e' && chr != 'i' && chr != 'o' && chr != 'u') {
-                return true;
-            }
-        }
-        return false;
+        System.out.println(output);
+        return output;
     }
     
     private void setCache(String str, HashMap<Character, Integer> map) {
@@ -138,14 +167,5 @@ public class Counter {
     
     private HashMap<Character, Integer> getCache(String str) {
         return cache.get(str);
-    }
-    
-    public void print(String str) {
-        HashMap<Character, Integer> map = countUniqueCharachters(str);
-        System.out.println(str);
-        System.out.println("The number of unique characters in the current line");
-        for(Map.Entry<Character, Integer> item : map.entrySet()) {
-            System.out.println("\"" + item.getKey() + "\" - " + item.getValue());
-        }
     }
 }
